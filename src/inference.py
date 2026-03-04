@@ -45,7 +45,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     
     p.add_argument("-w_p", "--wandb_project",
-                   default="da6401-assignment1",
+                   default="da6401-assignment1_ma25m026",
                    help="Weights and Biases Project ID")
 
     
