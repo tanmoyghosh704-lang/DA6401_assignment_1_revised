@@ -86,7 +86,7 @@ def section_2_5(project):
 
     for exp in experiments:
         name = exp.pop("name")
-        cfg  = _base_config(optimizer="sgd", epochs=15, **exp)
+        cfg  = _base_config(optimizer="sgd", epochs=10, **exp)
         run  = wandb.init(project=project, name=name, config=cfg)
         np.random.seed(cfg["seed"])
 
@@ -99,7 +99,7 @@ def section_2_5(project):
                 model.backward(logits, to_onehot(yb))
                 opt.update(model.layers)
 
-            # Dead neuron fraction (full training set pass)
+            
             _    = model.forward(X_tr)
             acts = model.get_hidden_activations()
             dead = {f"dead_neurons/layer_{i}":
@@ -114,7 +114,7 @@ def section_2_5(project):
 
 
 def section_2_6(project):
-    """MSE vs Cross-Entropy, identical arch and LR."""
+    
     for loss in ["cross_entropy", "mse"]:
         cfg = _base_config(loss=loss, epochs=15)
         run = wandb.init(project=project, name=f"2.6-loss-{loss}", config=cfg)

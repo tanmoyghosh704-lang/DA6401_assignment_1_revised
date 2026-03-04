@@ -1,0 +1,24 @@
+{
+  "dataset": "mnist",
+  "epochs": 10,
+  "batch_size": 128,
+  "loss": "mse",
+  "optimizer": "rmsprop",
+  "learning_rate": 0.0016338,
+  "weight_decay": 0.0,
+  "num_layers": 4,
+  "hidden_size": [
+    128,
+    128,
+    64,
+    64
+  ],
+  "activation": "relu",
+  "weight_init": "xavier",
+  "test_metrics": {
+    "accuracy": 0.9801,
+    "precision": 0.9801828099547787,
+    "recall": 0.9799110942150799,
+    "f1": 0.9800109317522245
+  }
+}
