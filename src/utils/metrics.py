@@ -21,29 +21,37 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
     }
 
 
-def plot_confusion_matrix(y_true, y_pred, class_names=None,
-                          title="Confusion Matrix", save_path=None):
+def plot_confusion_matrix(y_true, y_pred, class_names, title="Confusion Matrix", save_path=None):
+    from sklearn.metrics import confusion_matrix
     
+
     cm = confusion_matrix(y_true, y_pred)
-    n  = cm.shape[0]
-    if class_names is None:
-        class_names = [str(i) for i in range(n)]
+    n  = len(class_names)
 
     fig, ax = plt.subplots(figsize=(10, 8))
     im = ax.imshow(cm, interpolation="nearest", cmap=plt.cm.Blues)
     plt.colorbar(im, ax=ax)
-    ax.set(xticks=np.arange(n), yticks=np.arange(n),
-           xticklabels=class_names, yticklabels=class_names,
-           xlabel="Predicted", ylabel="True", title=title)
-    plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
-             rotation_mode="anchor")
+
+    ax.set_xticks(np.arange(n))
+    ax.set_yticks(np.arange(n))
+    ax.set_xticklabels(class_names, rotation=45, ha="right")
+    ax.set_yticklabels(class_names)
+
+    # Add text annotations
     thresh = cm.max() / 2.0
     for i in range(n):
         for j in range(n):
-            ax.text(j, i, str(cm[i, j]), ha="center", va="center",
-                    color="white" if cm[i, j] > thresh else "black",
-                    fontsize=7)
+            ax.text(j, i, format(cm[i, j], "d"),
+                    ha="center", va="center",
+                    color="white" if cm[i, j] > thresh else "black")
+
+    ax.set_ylabel("True Label")
+    ax.set_xlabel("Predicted Label")
+    ax.set_title(title)
     fig.tight_layout()
+
     if save_path:
         fig.savefig(save_path, dpi=150)
-    return fig
+        plt.close(fig)
+    else:
+        plt.show()

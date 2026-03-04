@@ -125,47 +125,46 @@ def section_2_6(project):
 
 
 def section_2_8(model_path, project):
-    """
-    1. Standard confusion matrix.
-    2. Creative: top-10 confused digit pairs bar chart.
-    """
     _, _, (X_te, y_te) = load_data("mnist")
 
-    
-    import argparse
     dummy_args = argparse.Namespace(
-        hidden_size=[128,128,128], num_layers=3,
+        hidden_size=[128,128,64,64], num_layers=4,
         activation="relu", weight_init="xavier",
-        loss="cross_entropy",
+        loss="mse",
     )
     model   = NeuralNetwork(dummy_args)
     weights = load_model(model_path)
     model.set_weights(weights)
 
     y_pred = model.predict(X_te)
-    names  = get_class_names("mnist")
+    names  = [str(i) for i in range(10)]
 
     run = wandb.init(project=project, name="2.8-error-analysis")
 
-    
+    # ── Plot 1: Confusion Matrix (with diagonal) ──────────────────
     os.makedirs("src", exist_ok=True)
     plot_confusion_matrix(y_te, y_pred, names,
                           title="Best Model — MNIST",
                           save_path="src/confusion_matrix.png")
     wandb.log({"confusion_matrix": wandb.Image("src/confusion_matrix.png")})
 
-   
-    cm = sk_cm(y_te, y_pred)
-    np.fill_diagonal(cm, 0)
-    top   = np.argsort(cm.flatten())[::-1][:10]
-    rr, cc = np.unravel_index(top, cm.shape)
-    labels = [f"{names[r]} → {names[c]}" for r, c in zip(rr, cc)]
-    counts = [cm[r, c] for r, c in zip(rr, cc)]
+    # ── Plot 2: Top-10 Confused Pairs (diagonal zeroed ONLY here) ─
+    cm_err = sk_cm(y_te, y_pred).copy()   # separate copy!
+    np.fill_diagonal(cm_err, 0)
 
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.barh(labels[::-1], counts[::-1], color="tomato")
+    top     = np.argsort(cm_err.flatten())[::-1][:10]
+    rr, cc  = np.unravel_index(top, cm_err.shape)
+    rr      = [int(r) for r in rr]
+    cc      = [int(c) for c in cc]
+    labels  = [f"{names[r]} → {names[c]}" for r, c in zip(rr, cc)]
+    counts  = [int(cm_err[r, c]) for r, c in zip(rr, cc)]
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bars = ax.barh(labels[::-1], counts[::-1], color="tomato")
+    ax.bar_label(bars, fmt="%d", padding=3)
     ax.set_xlabel("# misclassifications")
     ax.set_title("Top-10 Confused Digit Pairs")
+    ax.set_xlim(0, max(counts) * 1.15)
     fig.tight_layout()
     fig.savefig("src/top_confused_pairs.png", dpi=150)
     wandb.log({"top_confused_pairs": wandb.Image("src/top_confused_pairs.png")})
