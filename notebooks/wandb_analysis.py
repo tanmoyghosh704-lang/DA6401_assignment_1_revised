@@ -78,15 +78,34 @@ def section_2_5(project):
     (X_tr, y_tr), (X_val, y_val), _ = load_data("mnist")
 
     experiments = [
-        dict(activation="relu", learning_rate=0.1,  name="2.5-relu-high-lr"),
-        dict(activation="relu", learning_rate=1e-3, name="2.5-relu-normal-lr"),
-        dict(activation="tanh", learning_rate=0.1,  name="2.5-tanh-high-lr"),
-        dict(activation="tanh", learning_rate=1e-3, name="2.5-tanh-normal-lr"),
-    ]
+    dict(activation="relu", learning_rate=0.5,    
+         optimizer="momentum",
+         num_layers=4,                             
+         hidden_size=[128,128,128,128],            
+         name="2.5-relu-high-lr"),
+
+    dict(activation="relu", learning_rate=1e-3,
+         optimizer="rmsprop",
+         num_layers=3,
+         hidden_size=[128,128,128],
+         name="2.5-relu-normal-lr"),
+
+    dict(activation="tanh", learning_rate=0.5,    
+         optimizer="momentum",
+         num_layers=4,
+         hidden_size=[128,128,128,128],
+         name="2.5-tanh-high-lr"),
+
+    dict(activation="tanh", learning_rate=1e-3,
+         optimizer="rmsprop",
+         num_layers=3,
+         hidden_size=[128,128,128],
+         name="2.5-tanh-normal-lr"),
+        ]
 
     for exp in experiments:
         name = exp.pop("name")
-        cfg  = _base_config(optimizer="sgd", epochs=10, **exp)
+        cfg  = _base_config( epochs=15, **exp)
         run  = wandb.init(project=project, name=name, config=cfg)
         np.random.seed(cfg["seed"])
 
