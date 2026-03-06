@@ -1,7 +1,7 @@
 
 
 import numpy as np
-from src.ann.activations import softmax
+from ann.activations import softmax
 
 
 

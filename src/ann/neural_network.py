@@ -1,8 +1,8 @@
 
 
 import numpy as np
-from src.ann.activations import get_activation, softmax
-from src.ann.loss import get_loss
+from ann.activations import get_activation, softmax
+from ann.loss import get_loss
 
 
 
