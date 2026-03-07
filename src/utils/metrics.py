@@ -37,7 +37,7 @@ def plot_confusion_matrix(y_true, y_pred, class_names, title="Confusion Matrix",
     ax.set_xticklabels(class_names, rotation=45, ha="right")
     ax.set_yticklabels(class_names)
 
-    # Add text annotations
+    
     thresh = cm.max() / 2.0
     for i in range(n):
         for j in range(n):
