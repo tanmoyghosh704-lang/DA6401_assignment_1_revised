@@ -1,6 +1,7 @@
 # DA6401 — Assignment 1: Multi-Layer Perceptron (NumPy only)
-
-> **W&B Report:** [https://api.wandb.ai/links/tanmoyghosh704-indian-institute-of-technology-madras/2yq8u6d9]  
+#TANMOY GHSOS
+#ROLL-MA25M026
+> **W&B MReport:** [https://api.wandb.ai/links/tanmoyghosh704-indian-institute-of-technology-madras/2yq8u6d9]  
 > **GitHub Repo:** [https://github.com/tanmoyghosh704-lang/DA6401_assignment_1_revised]
 
 Pure-NumPy MLP for MNIST/Fashion-MNIST, with full backpropagation, 4 optimizers,
