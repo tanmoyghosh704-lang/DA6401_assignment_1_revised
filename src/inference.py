@@ -50,7 +50,7 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
-# ── required by autograder ───────────────────────────────────────────────────
+
 def parse_arguments():
     return build_parser().parse_args()
 

@@ -12,41 +12,32 @@ and Weights & Biases experiment tracking.
 
 ```
 da6401_assignment_1/
-├── models/                        ← empty folder (placeholder)
+├── models/.gitkeep                       
 ├── notebooks/
-│   ├── sweep.py                   ← §2.2  W&B 100-run sweep
-│   └── wandb_analysis.py          ← §2.1–§2.10  all report sections
+│   ├── sweep.py                   
+│   └── wandb_analysis.py          
 ├── src/
 │   ├── ann/
 │   │   ├── __init__.py
-│   │   ├── activations.py         ← sigmoid, tanh, relu + derivatives
-│   │   ├── loss.py                ← cross_entropy, mse + logit gradients
-│   │   ├── optimizers.py          ← sgd, momentum, nag, rmsprop
-│   │   └── neural_network.py      ← Layer + NeuralNetwork (get/set weights)
+│   │   ├── activations.py         
+│   │   ├── loss.py               
+│   │   ├── optimizers.py          
+│   │   └── neural_network.py      
 │   ├── utils/
 │   │   ├── __init__.py
-│   │   ├── data_loader.py         ← load_data, to_onehot, get_batches
-│   │   └── metrics.py             ← compute_metrics, confusion matrix
-│   ├── best_model.npy             ← saved after training (§1.2)
-│   ├── best_config.json           ← saved after training (§1.2)
-│   ├── train.py                   ← CLI training (autograder entry-point)
-│   └── inference.py               ← CLI inference (autograder entry-point)
+│   │   ├── data_loader.py        
+│   │   └── metrics.py            
+│   ├── best_model.npy            
+│   ├── best_config.json          
+│   ├── train.py                   
+│   └── inference.py              
 ├── README.md
 └── requirements.txt
 ```
 
----
 
-## §1.2 Updated Instructions (27-02-2026) — What Changed
 
-1. **`-w_p / --wandb_project`** added to both `train.py` and `inference.py`
-2. **Model returns logits** — `NeuralNetwork.forward()` returns raw linear output only
-3. **`backward()` returns gradients** — list of `(grad_W, grad_b)` from last→first layer
-4. **`best_model.npy` and `best_config.json` saved to `src/`** folder
-5. **`neural_network.py`** has `get_weights()` and `set_weights()` methods
-6. **Both CLIs are identical** — same argparse flags, same defaults (best config)
 
----
 
 ## Run Order
 
@@ -77,9 +68,9 @@ python notebooks/wandb_analysis.py --section 2.9
 
 # 8. §1.1/§1.2  Train best model (update flags from your sweep results)
 python src/train.py \
-    -d mnist -e 15 -b 64 -l cross_entropy \
-    -o rmsprop -lr 0.001 -wd 0.0001 \
-    -nhl 3 -sz 128 128 128 \
+    -d mnist -e 10 -b 128 -l mse \
+    -o rmsprop -lr 0.0016338 -wd 0.0 \
+    -nhl 4 -sz 128 128 64 64 \
     -a relu -w_i xavier \
     -w_p da6401-assignment1 \
     --use_wandb --save_model --save_config src/best_config.json
@@ -113,5 +104,5 @@ python notebooks/wandb_analysis.py --section 2.10
 | `-sz` / `--hidden_size` | `128 128 128` | Neurons per layer |
 | `-a` / `--activation` | `relu` | `sigmoid`, `tanh`, `relu` |
 | `-w_i` / `--weight_init` | `xavier` | `random`, `xavier` |
-| `-w_p` / `--wandb_project` | `da6401-assignment1` | W&B Project ID (**new §1.2**) |
+| `-w_p` / `--wandb_project` | `da6401-assignment1` |
 | `--model_path` | `src/best_model.npy` | Load/save path |
