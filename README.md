@@ -1,6 +1,5 @@
 # DA6401 — Assignment 1: Multi-Layer Perceptron (NumPy only)
-#TANMOY GHSOS
-#ROLL-MA25M026
+
 > **W&B MReport:** [https://api.wandb.ai/links/tanmoyghosh704-indian-institute-of-technology-madras/2yq8u6d9]  
 > **GitHub Repo:** [https://github.com/tanmoyghosh704-lang/DA6401_assignment_1_revised]
 
